@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: backe-end
+spec:
+  selector:
+    matchLabels:
+      foo: bar
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      containers:
+      - name: back-end
+        # This is the import path for the Go binary to build and run.
+        image: github.com/pratap0007/golang
+        ports:
+        - containerPort: 5000
