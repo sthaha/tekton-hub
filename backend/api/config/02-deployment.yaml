@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api
@@ -17,3 +17,4 @@ spec:
           image: github.com/redhat-developer/tekton-hub/backend/api/cmd/api
           ports:
             - containerPort: 5000
+
