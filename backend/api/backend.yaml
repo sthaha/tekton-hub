@@ -15,6 +15,6 @@ spec:
       containers:
       - name: back-end
         # This is the import path for the Go binary to build and run.
-        image: github.com/pratap0007/golang
+        image: github.com/pratap0007/tekton-hub/tree/local_deployment/backend/api
         ports:
         - containerPort: 5000
