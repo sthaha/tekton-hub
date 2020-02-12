@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  labels:
+    app: db
+  name: postgresql
+  namespace: tekton-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+        name: postgresql
+    spec:
+      containers:
+        - env:
+            - name: POSTGRESQL_DATABASE
+              value: db_name
+            - name: POSTGRESQL_PASSWORD
+              value: password
+            - name: POSTGRESQL_USER
+              value: username
+          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:713619e271020556016c60fde6c623b356416d0bfd8bd4214e1b1315952ee8cd
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+                - /usr/libexec/check-container
+                - --live
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: db
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - /usr/libexec/check-container
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: 512Mi
+          securityContext:
+          volumeMounts:
+            - mountPath: /var/lib/pgsql/data
+              name: postgresql-data
+      restartPolicy: Always
+      volumes:
+        - name: postgresql-data
+          persistentVolumeClaim:
+            claimName: db
