@@ -4,7 +4,7 @@ metadata:
   annotations:
   labels:
     app: db
-  name: postgresql
+  name: db
   namespace: tekton-hub
 spec:
   replicas: 1
@@ -15,16 +15,25 @@ spec:
     metadata:
       labels:
         app: db
-        name: postgresql
+        name: db
     spec:
       containers:
         - env:
-            - name: POSTGRESQL_DATABASE
-              value: db_name
             - name: POSTGRESQL_PASSWORD
-              value: password
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: database-password
             - name: POSTGRESQL_USER
-              value: username
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: database-user
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: database-name
           image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:713619e271020556016c60fde6c623b356416d0bfd8bd4214e1b1315952ee8cd
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -53,12 +62,11 @@ spec:
           resources:
             limits:
               memory: 512Mi
-          securityContext:
           volumeMounts:
             - mountPath: /var/lib/pgsql/data
-              name: postgresql-data
+              name: db-data
       restartPolicy: Always
       volumes:
-        - name: postgresql-data
+        - name: db-data
           persistentVolumeClaim:
             claimName: db
