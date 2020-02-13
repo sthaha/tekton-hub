@@ -19,21 +19,21 @@ spec:
     spec:
       containers:
         - env:
-            - name: POSTGRESQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db
-                  key: db-password
-            - name: POSTGRESQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: db
-                  key: db-user
             - name: POSTGRESQL_DATABASE
               valueFrom:
                 secretKeyRef:
                   name: db
-                  key: db-name
+                  key: POSTGRESQL_DATABASE
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: POSTGRESQL_USER
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: POSTGRESQL_PASSWORD
           image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql
           imagePullPolicy: IfNotPresent
           livenessProbe:
