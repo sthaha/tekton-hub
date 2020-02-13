@@ -21,13 +21,6 @@ var DB *sql.DB
 
 // StartConnection will start a new database connection
 func StartConnection() error {
-	log.Printf("env :%v", os.Environ())
-
-	port := "5432" // default postgres port
-	if val, ok := os.LookupEnv("POSTGRESQL_PORT"); ok {
-		log.Printf("port :%v", val)
-		port = val
-	}
 
 	var (
 		host     = os.Getenv("POSTGRESQL_HOST")
@@ -35,22 +28,30 @@ func StartConnection() error {
 		password = os.Getenv("POSTGRESQL_PASSWORD")
 		dbname   = os.Getenv("POSTGRESQL_DATABASE")
 	)
+
+	port := "5432" // default postgres port
+	if val, ok := os.LookupEnv("POSTGRESQL_PORT"); ok {
+		port = val
+	}
+
 	connectInfo := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
+
 	// Connect to PostgreSQL on Openshift
 	log.Printf("connecting to db: %s", connectInfo)
 	db, err := sql.Open("postgres", connectInfo)
+	if err != nil {
+		return err
+	}
+
 	DB = db
-	if err != nil {
-		return err
-	}
 	// defer db.Close()
-	err = DB.Ping()
-	if err != nil {
+	if err = DB.Ping(); err != nil {
 		return err
 	}
-	println("Successful Connection")
+
+	log.Printf("Successfully connected to db")
 	return nil
 }
 
