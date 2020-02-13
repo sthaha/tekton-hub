@@ -1,0 +1,20 @@
+--
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: github.com/redhat-developer/tekton-hub/backend/api/cmd/api
+          ports:
+            - containerPort: 5000
