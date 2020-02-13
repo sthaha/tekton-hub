@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/google/go-github/github"
 	"github.com/redhat-developer/tekton-hub/backend/api/pkg/polling"
 	"github.com/redhat-developer/tekton-hub/backend/api/pkg/utility"
-	"github.com/google/go-github/github"
 
 	// Blank for package side effect
 	_ "github.com/lib/pq"
@@ -26,7 +26,7 @@ func StartConnection() error {
 	var (
 		host     = os.Getenv("HOST")
 		port     = portString
-		user     = os.Getenv("POSTGRESQL_USERNAME")
+		user     = os.Getenv("POSTGRESQL_USER")
 		password = os.Getenv("POSTGRESQL_PASSWORD")
 		dbname   = os.Getenv("POSTGRESQL_DATABASE")
 	)

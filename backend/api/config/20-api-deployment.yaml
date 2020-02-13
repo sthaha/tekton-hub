@@ -19,3 +19,22 @@ spec:
           image: github.com/redhat-developer/tekton-hub/backend/api/cmd/api
           ports:
             - containerPort: 5000
+          env:
+            - name: HOST
+              value: db
+            - name: POSTGRESQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: POSTGRESQL_DATABASE
+            - name: POSTGRESQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: POSTGRESQL_USER
+            - name: POSTGRESQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db
+                  key: POSTGRESQL_PASSWORD
+
