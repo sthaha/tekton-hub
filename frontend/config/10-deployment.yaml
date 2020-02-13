@@ -1,0 +1,22 @@
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: tekton-hub
+spec:
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: nodejs
+    spec:
+      containers:
+        - name: frontend
+          image: docker.io/puneet2147/test-frontend:v1
+          ports:
+            - containerPort: 80
+              protocol: TCP
