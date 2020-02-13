@@ -42,5 +42,3 @@
        
    ![Install Commands](/images/install-steps.png)
 
-
-   8. Steps to run the application locally: [Tekton-hub](docs/README.md)
