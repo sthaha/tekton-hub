@@ -23,18 +23,18 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db
-                  key: database-password
+                  key: db-password
             - name: POSTGRESQL_USER
               valueFrom:
                 secretKeyRef:
                   name: db
-                  key: database-user
+                  key: db-user
             - name: POSTGRESQL_DATABASE
               valueFrom:
                 secretKeyRef:
                   name: db
-                  key: database-name
-          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:713619e271020556016c60fde6c623b356416d0bfd8bd4214e1b1315952ee8cd
+                  key: db-name
+          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql
           imagePullPolicy: IfNotPresent
           livenessProbe:
             exec:
