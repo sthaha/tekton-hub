@@ -20,7 +20,7 @@ spec:
           ports:
             - containerPort: 5000
           env:
-            - name: HOST
+            - name: POSTGRESQL_HOST
               value: db
             - name: POSTGRESQL_DATABASE
               valueFrom:

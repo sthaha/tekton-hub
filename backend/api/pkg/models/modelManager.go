@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 
 	"github.com/google/go-github/github"
@@ -22,19 +21,26 @@ var DB *sql.DB
 
 // StartConnection will start a new database connection
 func StartConnection() error {
-	portString, _ := strconv.Atoi(os.Getenv("PORT"))
+	log.Printf("env :%v", os.Environ())
+
+	port := "5432" // default postgres port
+	if val, ok := os.LookupEnv("POSTGRESQL_PORT"); ok {
+		log.Printf("port :%v", val)
+		port = val
+	}
+
 	var (
-		host     = os.Getenv("HOST")
-		port     = portString
+		host     = os.Getenv("POSTGRESQL_HOST")
 		user     = os.Getenv("POSTGRESQL_USER")
 		password = os.Getenv("POSTGRESQL_PASSWORD")
 		dbname   = os.Getenv("POSTGRESQL_DATABASE")
 	)
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
+	connectInfo := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	// Connect to PostgreSQL on Openshift
-	db, err := sql.Open("postgres", psqlInfo)
+	log.Printf("connecting to db: %s", connectInfo)
+	db, err := sql.Open("postgres", connectInfo)
 	DB = db
 	if err != nil {
 		return err
