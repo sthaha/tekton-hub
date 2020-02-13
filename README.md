@@ -42,3 +42,5 @@
        
    ![Install Commands](/images/install-steps.png)
 
+
+   8. [Steps to run the application locally](docs/README.md)
