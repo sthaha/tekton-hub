@@ -20,3 +20,10 @@ spec:
           image: github.com/redhat-developer/tekton-hub/backend/validation
           ports:
             - containerPort: 5000
+          volumeMounts:
+            - mountPath: /app/resources
+              name: validation-data
+      volumes:
+        - name: validation-data
+          persistentVolumeClaim:
+            claimName: validation
