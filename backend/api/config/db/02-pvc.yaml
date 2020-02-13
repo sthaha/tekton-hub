@@ -4,7 +4,7 @@ metadata:
   labels:
     app: db
   name: db
-  namespace: tekton-hub1
+  namespace: tekton-hub
 spec:
   accessModes:
     - ReadWriteOnce
