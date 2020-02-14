@@ -37,4 +37,23 @@ spec:
                 secretKeyRef:
                   name: db
                   key: POSTGRESQL_PASSWORD
+            - name: VALIDATION_API
+              value: 'validation'                  
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: GITHUB_TOKEN
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api
+                  key: CLIENT_SECRET
+
+    
 
