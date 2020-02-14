@@ -5,6 +5,7 @@ metadata:
   name: validation
   labels:
     app: validation
+  namespace: tekton-hub
 spec:
   selector:
     matchLabels:
