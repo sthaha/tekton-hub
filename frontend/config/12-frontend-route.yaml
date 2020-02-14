@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Route
 metadata:
   name: frontend
+  namespace: tekton-hub
 spec: 
   to:
     kind: Service
