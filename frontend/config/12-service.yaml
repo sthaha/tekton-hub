@@ -5,11 +5,11 @@ metadata:
   name: ui
   namespace: tekton-hub
   labels:
-    app: nodejs
+    app: ui
 spec:
   selector:
-    app: nodejs
+    app: ui
   ports:
-    - port: 80
+    - port: 8080
       targetPort: 8080
-  type: NodePort
+      protocol: TCP
