@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: ui
   namespace: tekton-hub
 spec:
   selector:
@@ -10,18 +10,18 @@ spec:
       app: nodejs
   template:
     metadata:
-      name: frontend
+      name: ui
       labels:
         app: nodejs
     spec:
       containers:
-        - name: frontend
+        - name: ui
           image: docker.io/puneet2147/test-frontend:v1
           env:
             - name: REACT_APP_BACKEND_API
               valueFrom:
                 configMapKeyRef:
-                  name: api-route
+                  name: ui
                   key: REACT_APP_BACKEND_API
           ports:
             - containerPort: 80
