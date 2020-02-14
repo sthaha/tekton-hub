@@ -17,6 +17,12 @@ spec:
       containers:
         - name: frontend
           image: docker.io/puneet2147/test-frontend:v1
+          env:
+            - name: REACT_APP_BACKEND_API
+              valueFrom:
+                configMapKeyRef:
+                  name: api-route
+                  key: REACT_APP_BACKEND_API
           ports:
             - containerPort: 80
               protocol: TCP
