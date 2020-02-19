@@ -7,8 +7,8 @@ echo '----------------------------------------------'
 
 cat <<-EOF >/usr/share/nginx/html/config.js
 window.config = {
-  API_URL: '$API_URL',
-  GH_CLIENT_ID: '$GH_CLIENT_ID',
+  API_URL: '$REACT_APP_API_URL',
+  GH_CLIENT_ID: '$REACT_APP_GH_CLIENT_ID',
 };
 
 

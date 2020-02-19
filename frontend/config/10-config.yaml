@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ui
+  namespace: tekton-hub
+data:
+  REACT_APP_API_URL: ''
+  REACT_APP_GH_CLIENT_ID: ''
