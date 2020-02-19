@@ -20,16 +20,16 @@ spec:
         - name: ui
           image: quay.io/sthaha/tekton-hub-ui
           env:
-            - name: REACT_APP_API_URL
+            - name: API_URL
               valueFrom:
                 configMapKeyRef:
                   name: ui
-                  key: REACT_APP_API_URL
-            - name: REACT_APP_GH_CLIENT_ID
+                  key: API_URL
+            - name: GH_CLIENT_ID
               valueFrom:
                 configMapKeyRef:
                   name: ui
-                  key: REACT_APP_GH_CLIENT_ID
+                  key: GH_CLIENT_ID
           ports:
             - containerPort: 8080
               protocol: TCP
