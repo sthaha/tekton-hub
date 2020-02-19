@@ -2,10 +2,10 @@
 set -e -u -o pipefail
 
 echo "Current ENV"
-cat /usr/share/nginx/html/env.js
+cat /usr/share/nginx/html/config.js
 echo '----------------------------------------------'
 
-cat <<-EOF >/usr/share/nginx/html/env.js
+cat <<-EOF >/usr/share/nginx/html/config.js
 window.config = {
   API_URL: '$API_URL',
   GH_CLIENT_ID: '$GH_CLIENT_ID',
@@ -17,7 +17,7 @@ console.debug("application config", window.config);
 EOF
 
 echo "Modified ENV"
-cat /usr/share/nginx/html/env.js
+cat /usr/share/nginx/html/config.js
 echo '----------------------------------------------'
 
 
