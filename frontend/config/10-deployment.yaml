@@ -18,13 +18,8 @@ spec:
     spec:
       containers:
         - name: ui
-          image: quay.io/sthaha/tekton-hub-ui
-          env:
-            - name: REACT_APP_API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: ui
-                  key: REACT_APP_API_URL
+          #image: quay.io/sthaha/tekton-hub-ui
+          image: docker.io/puneet2147/pmkt-frontend:v6
           ports:
             - containerPort: 8080
               protocol: TCP
