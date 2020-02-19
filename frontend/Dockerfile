@@ -1,4 +1,4 @@
-FROM node:12-alpine as tekton-hub
+FROM node:12-alpine as BUILD
 WORKDIR /app
 
 # install deps and the copy the src to speed up docker build
@@ -12,11 +12,14 @@ COPY src /app/src/
 RUN npm run build
 
 # Stage 2 - the production environment
-FROM nginxinc/nginx-unprivileged 
-COPY --from=tekton-hub /app/build /usr/share/nginx/html
+FROM nginxinc/nginx-unprivileged
+COPY --from=BUILD /app/build /usr/share/nginx/html
+COPY image/start.sh /usr/bin/
+
+USER root
+RUN chown nginx:root /usr/share/nginx/html/env.js
+USER nginx
+
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-EXPOSE 8080
 
-
-
+CMD /usr/bin/start.sh
