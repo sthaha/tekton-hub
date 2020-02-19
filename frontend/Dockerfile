@@ -20,6 +20,6 @@ USER root
 RUN chown nginx:root /usr/share/nginx/html/env.js
 USER nginx
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD /usr/bin/start.sh
