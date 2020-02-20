@@ -5,5 +5,5 @@ metadata:
   name: ui
   namespace: tekton-hub
 data:
-  API_URL: ''
+  API_URL: 'https://api-tekton-hub.apps-crc.testing'
   GH_CLIENT_ID: ''
