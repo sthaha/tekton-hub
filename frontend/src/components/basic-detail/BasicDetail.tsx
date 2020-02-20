@@ -1,12 +1,11 @@
-//  eslint-enable max-len
-import React, {useState, useEffect} from 'react';
-import Popup from 'reactjs-popup';
+import React, {useState, useEffect, ReactNode} from 'react';
 import {
   Card,
   Flex,
   FlexItem,
   Button,
   Grid,
+  Badge,
   GridItem,
   CardHead,
   TextContent,
@@ -14,20 +13,18 @@ import {
   CardActions,
   ClipboardCopy,
   ClipboardCopyVariant,
+  Modal,
+  TextVariants,
 } from '@patternfly/react-core';
+import c_modal_box_BoxShadow	from '@patternfly/react-styles'
 import {DownloadIcon, GithubIcon} from '@patternfly/react-icons';
-import {
-  Badge,
-} from '@patternfly/react-core';
-import './index.css';
 import '@patternfly/react-core/dist/styles/base.css';
-import avatarImg from './download.png';
-import './index.css';
-import {API_URL} from '../../constants';
-import {useParams} from 'react-router';
-// import SyntaxHighlighter from 'react-syntax-highlighter';
 import Rating from '../rating/Rating';
-
+import {API_URL} from '../../constants';
+import avatarImg from './download.png';
+import {useParams} from 'react-router';
+import './basicdetail.css';
+import { is } from '@babel/types';
 export interface BasicDetailPropObject {
     id: any
     name : string;
@@ -42,10 +39,13 @@ export interface BasicDetailProp {
   task: BasicDetailPropObject
 }
 
+
+
 const BasicDetail: React.FC<BasicDetailProp> = (props: BasicDetailProp) => {
   const {taskId} = useParams();
   const taskArr : any = [];
   const [resourcePath, setResourcePath]=useState();
+  const [isModalOpen,SetIsModalOpen]=useState(false);
 
   if (props.task.tags != null) {
     taskArr.push(props.task.tags);
@@ -58,48 +58,41 @@ const BasicDetail: React.FC<BasicDetailProp> = (props: BasicDetailProp) => {
         .then((data) => setResourcePath(data));
     // eslint-disable-next-line
   }, []);
-  const Myfun=(it:any) =>{
-    return (
-
-      <Flex breakpointMods={[{modifier: 'row', breakpoint: 'lg'}]}>
-        <FlexItem>
-
-          <ClipboardCopy style = {{width: '53em'}}
+  const ClipboardItem=(it:any) =>{
+    return ( 
+      <React.Fragment> 
+        <ClipboardCopy style={{marginBottom:'2em'}}
             isReadOnly variant={ClipboardCopyVariant.expansion}>
             {`kubectl apply -f ${it.it}`}</ClipboardCopy>
-          <br />
-        </FlexItem>
-      </Flex>
+      </React.Fragment>
+     
     );
   };
 
-
-  let taskLink :any;
-  let pipelineLink:any = '';
+  let taskLink :ReactNode;
+  let pipelineLink:ReactNode;
   if (resourcePath !== undefined) {
-    // for displaying resources for pipelines
-    if (resourcePath['pipelines'] !== null) {
+    // for  handling pipeline raw path
+    if (resourcePath['pipelines']){
       const pipelinePath = 'kubectl apply -f ' + resourcePath['pipelines'];
       pipelineLink =
-      <div>
-        <Text style = {{paddingLeft: '0.5em'}}> <b>Pipeline</b> </Text>
-        <ClipboardCopy style = {{width: '53em', marginLeft: '2.8em'}} isReadOnly
+      <React.Fragment>
+        <Text > <b>Pipeline</b> </Text>
+        <ClipboardCopy  isReadOnly
           variant={ClipboardCopyVariant.expansion}>
           {`${pipelinePath}`}</ClipboardCopy>
-
-      </div>;
+      </React.Fragment>;
     }
-
-    if (resourcePath['tasks'] !== null) {
+//   for handling task raw path
+    if (resourcePath['tasks']) 
       taskLink = <ul>
         {
-          resourcePath['tasks'].map((it:any) => <Myfun it={it} key={it} />)
+          resourcePath['tasks'].map((it:any) => <ClipboardItem it={it} key={it} />)
         }
       </ul>;
     }
-  }
 
-
+  
   return (
     <Flex>
       <Card style={{marginLeft: '-2em', marginRight: '-2em',
@@ -148,47 +141,40 @@ const BasicDetail: React.FC<BasicDetailProp> = (props: BasicDetailProp) => {
                 <DownloadIcon style={{marginRight: '1em'}}/>
                 {props.task.downloads}
               </FlexItem>
-              <FlexItem style={{marginLeft: '-3em'}}>
-
-                <div>
+             <FlexItem style={{marginLeft: '-3em'}}>
+                <React.Fragment>
                   { document.queryCommandSupported('copy')}
-                  <Popup trigger={<Button className="button"
-                  > Install </Button>} modal>
-                    {(close) => (
-                      <div className="modal">
-                        <button className="close" onClick={close}>
-                              &times;
-                        </button>
-
-                        <div className="header">
-                          {props.task.name.charAt(0).toUpperCase()+
-                            props.task.name.slice(1)}
-                        </div>
-                        <div className="content" >
-                          {' '}
-                          <div style={{marginBottom: '1em',
-                            marginLeft: '0.25em', marginTop: '1em'}}>
-                            <span style={{fontSize: '1em'}}>
-                            Install on Kubernetes  </span>
-                            <br />
-                          </div>
+                  <Button variant="primary" 
+                  className="button" 
+                  onClick={() => SetIsModalOpen(!isModalOpen)}
+                  >
+                    Install
+                  </Button>
+        
+                <Modal
+                      width={'60%'}
+                      title={props.task.name.charAt(0).toUpperCase()+
+                        props.task.name.slice(1)}
+                      isOpen={isModalOpen}
+                      onClose={() => SetIsModalOpen(!isModalOpen)}
+                      isFooterLeftAligned
+                    >
+                       <hr />
+                        <div>
+                        
+                          
                           <TextContent>
+                            <Text component={TextVariants.h2} className="modaltext">Install on Kubernetes</Text> 
                             {pipelineLink}
-
-                            <Text
-                              style = {{paddingLeft: '0.5em',
-                                marginTop: '0.5em'}}>
-                              <b>Tasks</b>
-                            </Text>
+                            <Text> Tasks </Text>
                             {taskLink}
-                          </TextContent>
+                          </TextContent>  
                           <br />
                         </div>
-                      </div>
-                    )}
-                  </Popup>
-                </div>
+          
+        </Modal>
 
+        </React.Fragment>
               </FlexItem>
             </Flex>
           </CardActions>
@@ -196,7 +182,7 @@ const BasicDetail: React.FC<BasicDetailProp> = (props: BasicDetailProp) => {
       </Card>
     </Flex>
   );
-};
+                          }
 
 
 export default BasicDetail;
