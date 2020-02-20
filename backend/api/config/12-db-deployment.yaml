@@ -18,7 +18,13 @@ spec:
         name: db
     spec:
       containers:
-        - env:
+        - name: db
+          image: registry.redhat.io/rhscl/postgresql-12-rhel7
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          env:
             - name: POSTGRESQL_DATABASE
               valueFrom:
                 secretKeyRef:
@@ -34,8 +40,6 @@ spec:
                 secretKeyRef:
                   name: db
                   key: POSTGRESQL_PASSWORD
-          image: registry.access.redhat.com/rhscl/postgresql-94-rhel7
-          imagePullPolicy: IfNotPresent
           livenessProbe:
             exec:
               command:
@@ -46,10 +50,6 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 10
-          name: db
-          ports:
-            - containerPort: 5432
-              protocol: TCP
           readinessProbe:
             exec:
               command:
