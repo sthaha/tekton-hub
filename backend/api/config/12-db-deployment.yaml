@@ -34,7 +34,7 @@ spec:
                 secretKeyRef:
                   name: db
                   key: POSTGRESQL_PASSWORD
-          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql
+          image: registry.access.redhat.com/rhscl/postgresql-94-rhel7
           imagePullPolicy: IfNotPresent
           livenessProbe:
             exec:
