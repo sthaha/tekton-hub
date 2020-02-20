@@ -1,11 +1,13 @@
 #!//bin/bash
 set -e -u -o pipefail
 
+CONFIG_JS=/usr/share/nginx/html/config.js
 echo "Current ENV"
-cat /usr/share/nginx/html/config.js
+cat $CONFIG_JS
+ls -l  $CONFIG_JS
 echo '----------------------------------------------'
 
-cat <<-EOF >/usr/share/nginx/html/config.js
+cat <<-EOF > $CONFIG_JS
 window.config = {
   API_URL: '$API_URL',
   GH_CLIENT_ID: '$GH_CLIENT_ID',
@@ -17,7 +19,7 @@ console.debug("application config", window.config);
 EOF
 
 echo "Modified ENV"
-cat /usr/share/nginx/html/config.js
+cat $CONFIG_JS
 echo '----------------------------------------------'
 
 
