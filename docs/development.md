@@ -91,8 +91,8 @@ oc port-forward svc/db 5432:5432
 On a different terminal, use `psql` to create and load the database
 
 ```
-psql -h localhost -U postgres -p postgres -c 'create database tekon_hub;'
-psql -h localhost -U postgres -p postgres tekton_hub < backups/02-01-2020.dump
+psql -h localhost -U postgres -p 5432 -c 'create database tekon_hub;'
+psql -h localhost -U postgres -p 5432 tekton_hub < backups/02-01-2020.dump
 ```
 
 #### Ensure api service is running
@@ -113,7 +113,7 @@ db-748f56cb8c-rwqjc    1/1     Running   1          72s
 #### Verify if api route is accessible
 
 ```
-curl -kL https://api-tekton-hub.apps-crc.testing/resources
+curl -k -X GET -I $(oc get routes api --template='https://{{ .spec.host }}/resources')
 ```
 
 ### Deploy Validation Service
@@ -176,3 +176,5 @@ oc apply -f config
 ```
 oc get pods -o wide -w
 ```
+
+Open: oc get routes ui --template='https://{{ .spec.host }} '
